@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     padding: "10px",
+    
   },
 }));
 
@@ -20,7 +21,7 @@ function ChatMessage() {
     if (roomId) {
       db.collection("rooms")
         .doc(roomId)
-        .collection("messages")
+        .collection("messages").orderBy('time')
         .onSnapshot((snapshot) => {
           setMessages(snapshot.docs.map((doc) => doc.data()));
         });
@@ -34,7 +35,7 @@ function ChatMessage() {
           displayName={item.displayName}
           photoUrl={item.photoUrl}
           message={item.message}
-          time={item.time}
+          time={new Date(item?.time?.toDate())}
         />
       ))}
     </div>

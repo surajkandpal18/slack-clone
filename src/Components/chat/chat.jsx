@@ -7,6 +7,7 @@ import { Grid } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import db from "../firebase/firebase";
 import ChatMessage from "./chat-message";
+import SendMessage from "./send-message";
 
 //const useStyles = makeStyles((theme) => ({}));
 
@@ -27,13 +28,15 @@ function Chat() {
 
   console.log(roomDetails);
   return (
-    <Grid container direction="column">
+    <Grid container direction="column" wrap='nowrap'>
       <Grid item>
         <ChatHeader name={roomDetails?.name} />
       </Grid>
-      <Grid item>
+      <Grid item style={{maxHeight:'71vh',overflowY:'auto'}} >
         <ChatMessage />
       </Grid>
+      <SendMessage roomId={roomId}/>
+      
     </Grid>
   );
 }

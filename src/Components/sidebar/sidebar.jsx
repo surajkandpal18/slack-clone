@@ -27,11 +27,12 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: "20em",
     //maxWidth: drawerWidth,
-    height: "100vh",
+    height: "100%",
     zIndex: 10,
     backgroundColor: theme.palette.primary.main,
-
+maxHeight:'90.5vh',
     scrollbarWidth: "none",
+    overflowY:'auto'
   },
 
   nameSpace: {

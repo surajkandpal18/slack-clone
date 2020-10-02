@@ -37,7 +37,7 @@ function App() {
         ) : (
           <>
             <Header />
-            <Grid container style={{ width: "100%" }}>
+            <Grid container style={{ width: "100%",height:'90.1vh' }}>
               <Grid item style={{ margin: 0 }}>
                 <Sidebar />
               </Grid>

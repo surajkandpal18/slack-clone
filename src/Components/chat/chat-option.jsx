@@ -19,7 +19,7 @@ function ChatOption({ message, photoUrl, displayName, time }) {
   const [{ user }] = useStateValue();
   return (
     <div className={classes.messageContainer}>
-      {user.displayName !== ListItem.displayName ? (
+      {user.displayName !== displayName ? (
         <>
           <div>
             <Avatar src={photoUrl} />
@@ -43,7 +43,7 @@ function ChatOption({ message, photoUrl, displayName, time }) {
               </div>
               <div>
                 <Typography variant="caption" style={{ color: "grey" }}>
-                  {time}
+                  {time.toString()}
                 </Typography>
               </div>
             </Paper>
@@ -63,9 +63,19 @@ function ChatOption({ message, photoUrl, displayName, time }) {
               }}
               elevation={5}
             >
-              <div>{displayName}</div>
-              <div>{message}</div>
-              <div>{time}</div>
+            <div>
+            <Typography variant="body2" style={{ fontWeight: "bold" }}>
+              {displayName}
+            </Typography>
+          </div>
+          <div>
+            <Typography variant="body2">{message}</Typography>
+          </div>
+          <div>
+            <Typography variant="caption" style={{ color: "grey" }}>
+              {time.toString()}
+            </Typography>
+          </div>
             </Paper>
           </div>
           <div>
