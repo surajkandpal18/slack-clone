@@ -30,8 +30,9 @@ function ChatMessage() {
 
   return (
     <div className={classes.myMessages}>
-      {message?.map((item) => (
+      {message?.map((item,index) => (
         <ChatOption
+        key={index}
           displayName={item.displayName}
           photoUrl={item.photoUrl}
           message={item.message}

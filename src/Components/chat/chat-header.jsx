@@ -19,7 +19,7 @@ function ChatHeader({ name }) {
   const classes = useStyles();
   return (
     <Grid container className={classes.chatHeader} alignItems="center">
-      <Grid item container sm alignItems="center">
+      <Grid item container xs alignItems="center">
         <Grid item>
           <Typography
             variant="subtitle1"
@@ -33,7 +33,7 @@ function ChatHeader({ name }) {
           <StarBorderIcon />
         </Grid>
       </Grid>
-      <Grid item container sm justify="flex-end" alignItems="center" style={{marginRight:'1em'}}>
+      <Grid item container xs justify="flex-end" alignItems="center" style={{marginRight:'1em'}}>
         <Grid item style={{ margin: "0.5em", marginBottom: "0.1em" }}>
           <InfoOutlinedIcon style={{ fontSize: "1rem" }} />
         </Grid>

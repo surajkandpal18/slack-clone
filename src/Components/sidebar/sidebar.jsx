@@ -9,6 +9,7 @@ import {
   ListSubheader,
   makeStyles,
   Typography,
+  useMediaQuery,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
@@ -20,6 +21,8 @@ import { Edit } from "@material-ui/icons";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import db from "../firebase/firebase";
 import { useHistory } from "react-router-dom";
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import { actionTypes } from "../context/reducer";
 
 const drawerWidth = "240px";
 
@@ -32,7 +35,17 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
 maxHeight:'90.5vh',
     scrollbarWidth: "none",
-    overflowY:'auto'
+    overflowY:'auto',
+    transition:' 100ms',
+    [theme.breakpoints.down('xs')]:{
+     zIndex:'14',
+     width:'17em',
+     position:'fixed',
+     top:0,
+     height: "100vh",
+     maxHeight:'100vh',
+     transition:'500ms'
+    }
   },
 
   nameSpace: {
@@ -56,10 +69,12 @@ maxHeight:'90.5vh',
 function Sidebar() {
   const classes = useStyles();
   const theme = useTheme();
-  const [{ user }] = useStateValue();
+  const [{ user,drawer },dispatch] = useStateValue();
   const [channels, setChannels] = useState([]);
+  const [myDisplay,setMyDisplay]=useState(false);
   const history = useHistory();
-
+  const matchSm=useMediaQuery(theme.breakpoints.down('sm'))
+  const matchXs=useMediaQuery(theme.breakpoints.down('xs'))
   useEffect(() => {
     db.collection("rooms").onSnapshot((snapshot) => {
       setChannels(
@@ -67,9 +82,11 @@ function Sidebar() {
       );
     });
   }, []);
+
+  
   return (
     <>
-      <div className={classes.drawer}>
+      <div className={classes.drawer} style={{width:matchXs?drawer===true?'17em':'0':'20em'}}>
         <div>
           <div className={classes.nameSpace}>
             <div>
@@ -109,6 +126,16 @@ function Sidebar() {
                 />
               </IconButton>
             </div>
+           { matchXs?<div>
+            <IconButton onClick={()=>{
+              dispatch({
+                type:actionTypes.SET_DRAWER,
+                payload:false
+              })
+            }}>
+            <ArrowBackIosIcon style={{color:'#fff'}} />
+            </IconButton>
+            </div>:undefined}
           </div>
         </div>
         <Divider style={{ backgroundColor: theme.palette.primary.light }} />
@@ -154,7 +181,11 @@ function Sidebar() {
             <ListItem
               button
               key={item.name}
-              onClick={() => history.push("/rooms/" + item.id)}
+              onClick={() => {history.push("/rooms/" + item.id)
+              dispatch({
+                type:actionTypes.SET_DRAWER,
+                payload:false
+              })}}
             >
               <ListItemText
                 primary={`# ${item.name}`}

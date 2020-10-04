@@ -1,19 +1,22 @@
 import {
   AppBar,
   Avatar,
+  Hidden,
   IconButton,
   InputAdornment,
   InputBase,
   TextField,
   Toolbar,
   Typography,
+  useMediaQuery,
 } from "@material-ui/core";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { fade, makeStyles, useTheme } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import React from "react";
 import { useStateValue } from "../context/state-provider";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { actionTypes } from "../context/reducer";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,20 +25,43 @@ const useStyles = makeStyles((theme) => ({
     width:'35em',
         '& .MuiFilledInput-root':{
       backgroundColor:'rgba(250,250,250,0.3)'
+    },
+    marginLeft:'auto',
+    marginRight:'auto',
+   
+    [theme.breakpoints.down('sm')]:{
+      width:'20em',
+    
+    },
+    [theme.breakpoints.down('xs')]:{
+      width:'15em',
+      marginLeft:'1em',
     }
   }
 }));
 
 function Header() {
   const classes = useStyles();
-  const [{ user }] = useStateValue();
-
+  const [{ user,drawer },dispatch] = useStateValue();
+  const theme=useTheme()
+const matchSm=useMediaQuery(theme.breakpoints.down('sm'))
+const matchXs=useMediaQuery(theme.breakpoints.down('xs'))
   return (
     <div>
       <AppBar position="fixed" style={{ zIndex: 11 }} elevation={0}>
         <Toolbar disableGutters>
+        
+        {matchXs?<IconButton onClick={()=>{
+          dispatch({
+            type:actionTypes.SET_DRAWER,
+            payload:true,
+          })
+        }}>
+        <MenuIcon style={{color:'#fff'}}/>
+        </IconButton>:null}
+  
           <Avatar src={user.photoURL} style={{ marginLeft: "0.7em" }} />
-        <TextField variant='filled'  style={{marginLeft:'auto',marginRight:'auto'}} placeholder='Type something' className={classes.searchBox} 
+        <TextField variant='filled' placeholder='Type something' className={classes.searchBox} 
         InputProps={{
           startAdornment:
           <InputAdornment position="start">

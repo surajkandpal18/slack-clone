@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useRef, useState} from 'react'
 import db from '../firebase/firebase';
 import firebase from 'firebase'
 import { Button, IconButton, makeStyles, TextField } from '@material-ui/core';
@@ -21,6 +21,7 @@ function SendMessage({roomId}) {
     const [message,setMessage]=useState('');
     const [{user}]=useStateValue()
     const classes=useStyles()
+const sendButtonRef = useRef(null)
 
     const handleSendMessage=()=>{
      if(message.trim()!==''){   db.collection('rooms').doc(roomId).collection('messages').add({
@@ -38,9 +39,15 @@ function SendMessage({roomId}) {
     }
 
     return (
-        <div style={{position:'fixed' ,display:'flex',zIndex:5,bottom:'0',backgroundColor:'#fafafa'     ,marginLeft:'auto',marginRight:'auto'}}>
-            <TextField variant='outlined' placeholder='Send Message'  value={message} className={classes.messageBox} onChange={(e)=>setMessage(e.target.value)}/>
-            <IconButton onClick={handleSendMessage} color='primary'><SendIcon color='primary'/></IconButton>
+        <div style={{position:'fixed' ,width:'100%',display:'flex',zIndex:5,bottom:'0',backgroundColor:'#fafafa',paddingBottom:'0.5em',paddingTop:'1em'     ,marginLeft:'auto',marginRight:'auto'}}>
+            <TextField variant='outlined' placeholder='Send Message'  value={message} className={classes.messageBox} onChange={(e)=>setMessage(e.target.value)}  
+            onKeyPress= {(e) => {
+                if (e.key === 'Enter') {
+                 sendButtonRef.current.click()
+                  // write your functionality here
+                }}
+        }/>
+            <IconButton onClick={handleSendMessage} color='primary' ref={sendButtonRef}><SendIcon color='primary'/></IconButton>
         </div>
     )
 }
