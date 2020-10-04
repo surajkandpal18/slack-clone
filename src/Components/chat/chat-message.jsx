@@ -38,6 +38,7 @@ function ChatMessage() {
           time={new Date(item?.time?.toDate())}
         />
       ))}
+      <div id='lastMessage' style={{margin:0,padding:0}} />
     </div>
   );
 }

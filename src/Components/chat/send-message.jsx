@@ -28,13 +28,17 @@ function SendMessage({roomId}) {
             photoUrl:user.photoURL,
             message:message,
             time:firebase.firestore.FieldValue.serverTimestamp()
+        }
+        ).then(()=>{
+            setMessage('')
+            document.getElementById('lastMessage').scrollIntoView()
         }).catch(err=>{
             console.log(err)
         })}
     }
 
     return (
-        <div style={{position:'fixed' ,display:'flex',zIndex:5,bottom:'0',backgroundColor:'#fff',marginLeft:'auto',marginRight:'auto'}}>
+        <div style={{position:'fixed' ,display:'flex',zIndex:5,bottom:'0',backgroundColor:'#fafafa'     ,marginLeft:'auto',marginRight:'auto'}}>
             <TextField variant='outlined' placeholder='Send Message'  value={message} className={classes.messageBox} onChange={(e)=>setMessage(e.target.value)}/>
             <IconButton onClick={handleSendMessage} color='primary'><SendIcon color='primary'/></IconButton>
         </div>
