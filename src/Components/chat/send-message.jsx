@@ -4,6 +4,7 @@ import firebase from 'firebase'
 import { Button, IconButton, makeStyles, TextField } from '@material-ui/core';
 import { useStateValue } from '../context/state-provider'
 import SendIcon from '@material-ui/icons/Send';
+import { Email } from '@material-ui/icons';
 
 const useStyles=makeStyles((theme)=>({
 messageBox:{
@@ -28,7 +29,8 @@ const sendButtonRef = useRef(null)
             displayName:user.displayName,
             photoUrl:user.photoURL,
             message:message,
-            time:firebase.firestore.FieldValue.serverTimestamp()
+            time:firebase.firestore.FieldValue.serverTimestamp(),
+            email:user.email
         }
         ).then(()=>{
             setMessage('')

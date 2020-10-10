@@ -1,4 +1,10 @@
 import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   Drawer,
   IconButton,
@@ -8,6 +14,9 @@ import {
   ListItemText,
   ListSubheader,
   makeStyles,
+  Menu,
+  MenuItem,
+  TextField,
   Typography,
   useMediaQuery,
 } from "@material-ui/core";
@@ -23,6 +32,7 @@ import db from "../firebase/firebase";
 import { useHistory } from "react-router-dom";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { actionTypes } from "../context/reducer";
+import AddIcon from '@material-ui/icons/Add';
 
 const drawerWidth = "240px";
 
@@ -71,7 +81,13 @@ function Sidebar() {
   const theme = useTheme();
   const [{ user,drawer },dispatch] = useStateValue();
   const [channels, setChannels] = useState([]);
+  const [channelName,setChannelName]=useState('')
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [myDisplay,setMyDisplay]=useState(false);
+  const [open, setOpen] = React.useState(false);
+
+  
+
   const history = useHistory();
   const matchSm=useMediaQuery(theme.breakpoints.down('sm'))
   const matchXs=useMediaQuery(theme.breakpoints.down('xs'))
@@ -83,6 +99,29 @@ function Sidebar() {
     });
   }, []);
 
+  const addRooms=()=>
+  {
+    db.collection('rooms').add({
+      name:channelName
+    }).then((doc)=>handleDialogClose())
+
+  }
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDialogClose=()=>{
+    setOpen(false)
+  }
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   
   return (
     <>
@@ -164,6 +203,7 @@ function Sidebar() {
         <Divider style={{ backgroundColor: theme.palette.primary.light }} />
         <List
           subheader={
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
             <div
               style={{
                 color: "#fff",
@@ -174,9 +214,15 @@ function Sidebar() {
             >
               Channels
             </div>
+            <div style={{marginRight:'1em'}}>
+              <AddIcon style={{color:'#fff' ,cursor:'pointer'}} onClick={handleClickOpen}/>
+            </div>
+            </div>
+            
           }
           style={{ backgroundColor: theme.palette.primary.main }}
         >
+        
           {channels.map((item, index) => (
             <ListItem
               button
@@ -194,7 +240,44 @@ function Sidebar() {
             </ListItem>
           ))}
         </List>
+        <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={()=>{handleClickOpen();handleClose()}}>Add Channel</MenuItem>
+        <MenuItem onClick={handleClose}>Delete Channel</MenuItem>
+        
+      </Menu>
       </div>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Enter the name of the channel to be added
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Channel Name"
+            type="channelName"
+            value={channelName}
+            onChange={(e)=>setChannelName(e.target.value)}
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose} color="primary" style={{textTransform:'none'}}>
+            Cancel
+          </Button>
+          <Button onClick={addRooms} color="primary" style={{textTransform:'none'}}>
+            Add Channel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

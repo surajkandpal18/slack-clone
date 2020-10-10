@@ -23,7 +23,13 @@ const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
   searchBox:{
     width:'35em',
+  
+    '& .MuiFilledInput-input':{
+      padding: '18px 10px 10px',
+    },
+    
         '& .MuiFilledInput-root':{
+         
       backgroundColor:'rgba(250,250,250,0.3)'
     },
     marginLeft:'auto',

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Grid, Typography } from "@material-ui/core";
+import { Card, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
@@ -8,7 +8,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
   chatHeader: {
-    borderBottom: "1px solid black",
+
     padding: "1em",
     paddingRight: "0",
 
@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 function ChatHeader({ name }) {
   const classes = useStyles();
   return (
+    <Card elevation={3} style={{zIndex:5}}>
     <Grid container className={classes.chatHeader} alignItems="center">
       <Grid item container xs alignItems="center">
         <Grid item>
@@ -44,6 +45,7 @@ function ChatHeader({ name }) {
         </Grid>
       </Grid>
     </Grid>
+    </Card>
   );
 }
 

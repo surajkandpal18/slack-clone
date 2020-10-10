@@ -1,7 +1,10 @@
-import { Avatar, ListItem, Paper, Typography } from "@material-ui/core";
+import { Avatar, ListItem, MenuItem, Paper, Typography,Menu } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import React from "react";
+import React, { useState } from "react";
 import { useStateValue } from "../context/state-provider";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import db from "../firebase/firebase";
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   messageContainer: {
@@ -14,12 +17,28 @@ const useStyles = makeStyles((theme) => ({
     margin: "1em",
   },
 }));
-function ChatOption({ message, photoUrl, displayName, time }) {
+function ChatOption({ message, photoUrl, displayName, time,email,id }) {
   const classes = useStyles();
   const [{ user }] = useStateValue();
+  const { roomId } = useParams();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDeleteMessage=()=>{
+    console.log(id)
+    db.collection('rooms').doc(roomId).collection('messages').doc(id).delete()
+  }
+
   return (
     <div className={classes.messageContainer}>
-      {user.displayName !== displayName ? (
+      {user.email !== email ? (
         <>
           <div>
             <Avatar src={photoUrl} />
@@ -33,10 +52,15 @@ function ChatOption({ message, photoUrl, displayName, time }) {
               }}
               elevation={5}
             >
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
               <div>
                 <Typography variant="body2" style={{ fontWeight: "bold" }}>
                   {displayName}
                 </Typography>
+                </div>
+                <div>
+                <ExpandMoreIcon style={{color:'grey'}} onClick={handleClick} />
+                </div>
               </div>
               <div>
                 <Typography variant="body2">{message}</Typography>
@@ -63,11 +87,16 @@ function ChatOption({ message, photoUrl, displayName, time }) {
               }}
               elevation={5}
             >
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div>
-            <Typography variant="body2" style={{ fontWeight: "bold" }}>
-              {displayName}
-            </Typography>
-          </div>
+              <Typography variant="body2" style={{ fontWeight: "bold" }}>
+                {displayName}
+              </Typography>
+              </div>
+              <div>
+              <ExpandMoreIcon style={{color:'grey'}} onClick={handleClick} />
+              </div>
+            </div>
           <div>
             <Typography variant="body2">{message}</Typography>
           </div>
@@ -83,6 +112,17 @@ function ChatOption({ message, photoUrl, displayName, time }) {
           </div>
         </>
       )}
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={()=>{handleDeleteMessage();handleClose()}}>Delete Message</MenuItem>
+        <MenuItem onClick={handleClose}>Forward Message</MenuItem>
+        
+      </Menu>
     </div>
   );
 }

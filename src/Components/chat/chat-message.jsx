@@ -23,8 +23,11 @@ function ChatMessage() {
         .doc(roomId)
         .collection("messages").orderBy('time')
         .onSnapshot((snapshot) => {
-          setMessages(snapshot.docs.map((doc) => doc.data()));
-        });
+          setMessages(snapshot.docs.map((doc) =>( {id:doc.id,...doc.data()})));
+          document.getElementById('lastMessage').scrollIntoView()
+        })
+        
+
     }
   }, [roomId]);
 
@@ -37,6 +40,8 @@ function ChatMessage() {
           photoUrl={item.photoUrl}
           message={item.message}
           time={new Date(item?.time?.toDate())}
+          email={item.email}
+          id={item.id}
         />
       ))}
       <div id='lastMessage' style={{margin:0,padding:0}} />

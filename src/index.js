@@ -11,7 +11,7 @@ ReactDOM.render(
   <React.StrictMode>
     <StateProvider initialState={initialState} reducer={reducer}>
       <BrowserRouter>
-        <App />
+        <App style={{overflowY:'hidden'}}/>
       </BrowserRouter>
     </StateProvider>
   </React.StrictMode>,

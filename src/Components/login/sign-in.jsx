@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from "@material-ui/core";
+import { Button, Grid, Typography, useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/styles";
 import React from "react";
 import slackLogo from "../../assets/slack_logo.svg";
@@ -9,6 +9,7 @@ import { actionTypes } from "../context/reducer";
 function SignIn() {
   const theme = useTheme();
   const [{ user }, dispatch] = useStateValue();
+  const matchXs=useMediaQuery(theme.breakpoints.down('xs'))
 
   const handleLogin = () => {
     firebase
@@ -36,18 +37,22 @@ function SignIn() {
         <img src={slackLogo} alt="slackLogo" style={{ width: "10em" }} />
       </Grid>
       <Grid item>
-        <Typography variant="h3" style={{ fontWeight: "bold" }} gutterBottom>
+        <Typography variant="h3" style={{ fontWeight: "bold",textAlign:'center' }} gutterBottom textAlign='center'>
           Let's Find your team
         </Typography>
+        </Grid>
+        <Grid item container>
         <Typography
           variant="subtitle"
-          style={{ color: "#454245" }}
+          style={{ color: "#454245",marginLeft:'auto',
+          marginRight:'auto', }}
+          align='center'
           gutterBottom
         >
           Start by choosing the Google account that you use for work
         </Typography>
       </Grid>
-      <Grid item style={{ marginTop: "1em" }}>
+      <Grid item container style={{ marginTop: "1em" }} container>
         <Button
           variant="outlined"
           style={{
@@ -56,9 +61,10 @@ function SignIn() {
             textTransform: "none",
             borderWidth: "2px",
             fontWeight: 900,
-
-            width: "22em",
-            fontSize: "18px",
+marginLeft:'auto',
+marginRight:'auto',
+            width:matchXs?'16em': "22em",
+            fontSize:matchXs?'14px':"18px",
           }}
           onClick={handleLogin}
         >

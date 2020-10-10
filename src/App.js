@@ -12,6 +12,7 @@ import { actionTypes } from "./Components/context/reducer";
 import Chat from "./Components/chat/chat";
 import Header from "./Components/header/header";
 import Sidebar from "./Components/sidebar/sidebar";
+import "./index.css";
 
 function App() {
   const [{ user }, dispatch] = useStateValue();
@@ -31,13 +32,15 @@ function App() {
   return (
     <ThemeProvider theme={myTheme}>
       <CssBaseline />
-      <div className="App">
+      <div className="App" style={{
+        overflowY:'hidden'
+      }}>
         {user === null ? (
           <Route exact path="/" component={SignIn} />
         ) : (
           <>
             <Header />
-            <Grid container style={{ width: "100%",height:'90.1vh' }}>
+            <Grid container style={{ width: "100%",height:'90.1vh' ,overflowY:'hidden'}}>
               <Grid item style={{ margin: 0 }}>
                 <Sidebar />
               </Grid>
